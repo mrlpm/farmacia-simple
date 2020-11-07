@@ -4,26 +4,29 @@
  * and open the template in the editor.
  */
 
-package com.mycompany.farmacia.simple;
+package com.mycompany.farmacia.simple.vistas;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.mycompany.farmacia.simple.controladores.Configuracion;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author Monica Ranchos y Luis Pérez
  */
-public class Configuracion extends javax.swing.JFrame {
-
-    /** Creates new form Configuracion */
-    public Configuracion() {
+public class FrmConfiguracion extends javax.swing.JFrame {
+    
+    Configuracion conf;
+    /** Creates new form Configuracion
+     * @param conf */
+    public FrmConfiguracion(Configuracion conf) {
         initComponents();
+        this.conf = conf;
+        if (this.conf.Existe()){
+            jTextField1.setText(this.conf.getDatabase());
+            jTextField2.setText(this.conf.getUsuario());
+            jTextField3.setText(this.conf.getClave());
+            jTextField4.setText(this.conf.getServidor());
+            jTextField5.setText(this.conf.getPuerto());
+        }
     }
 
     /** This method is called from within the constructor to
@@ -147,29 +150,16 @@ public class Configuracion extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String database = jTextField1.getText();
-        String usuario = jTextField2.getText();
-        String clave = jTextField3.getText();
-        String servidor = jTextField4.getText();
-        String puerto = jTextField5.getText();
-        
-        try {
-            String content;
-            content = "[database]\nusuario="+usuario+"\nclave="+clave+
-                    "\nservidor="+servidor+"\npuerto="+puerto+"\nbase="+database;
-            String home = System.getProperty("user.home");
-            Path parentRuta = java.nio.file.Paths.get(home, ".farmacia");
-            Path rutaFile = java.nio.file.Paths.get(parentRuta.toString(), "config.ini");
-            java.nio.file.Files.deleteIfExists(rutaFile);
-            java.nio.file.Files.createDirectories(parentRuta);
-            File settings = new File(rutaFile.toString());
-            FileWriter fw = new FileWriter(settings.getAbsoluteFile());
-            try (BufferedWriter bw = new BufferedWriter(fw)) {
-                bw.write(content);
-                JOptionPane.showMessageDialog(rootPane, "Configuracion Guardada");
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField3.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField5.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Debes llenar todos los datos");
+        }else{
+            this.conf.setDatabase(jTextField1.getText());
+            this.conf.setUsuario(jTextField2.getText());
+            this.conf.setClave(jTextField3.getText());
+            this.conf.setServidor(jTextField4.getText());
+            this.conf.setPuerto(jTextField5.getText());
+
+            this.conf.Crear();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

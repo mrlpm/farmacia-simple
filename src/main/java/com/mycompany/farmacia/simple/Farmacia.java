@@ -5,7 +5,12 @@
  */
 package com.mycompany.farmacia.simple;
 
-import java.nio.file.Path;
+import com.mycompany.farmacia.simple.controladores.Auth;
+import com.mycompany.farmacia.simple.vistas.FrmConfiguracion;
+import com.mycompany.farmacia.simple.vistas.Login;
+import com.mycompany.farmacia.simple.controladores.Configuracion;
+import java.sql.Connection;
+import com.mycompany.farmacia.simple.modelos.conexion;
 
 /**
  *
@@ -13,19 +18,25 @@ import java.nio.file.Path;
  */
 public class Farmacia {
     
-    public static boolean configuracion(){
-        String home = System.getProperty("user.home");
-        Path path = java.nio.file.Paths.get(home, ".farmacia", "config.ini");
-        boolean config_file = java.nio.file.Files.exists(path);
-        return config_file;
-    }
+    
     public static void main(String[] args) {
-
-        if (configuracion()){
-            Login frmLogin = new Login();
+        Configuracion conf = new Configuracion(".farmacia","config.ini");
+        Auth auth = new Auth();
+        if (conf.Existe()){
+            conf.Leer();
+            String username, password, host, port, db_name, db_url;
+            username = conf.getUsuario();
+            password = conf.getClave();
+            host = conf.getServidor();
+            port = conf.getPuerto();
+            db_name = conf.getDatabase();
+            db_url = "jdbc:mysql://"+host+":"+port+"/"+db_name;
+            conexion mysql = new conexion(db_url, username, password);
+            Connection cn = mysql.conectar();
+            Login frmLogin = new Login(cn, auth);
             frmLogin.setVisible(true);
         } else {
-            Configuracion frmConfig = new Configuracion();
+            FrmConfiguracion frmConfig = new FrmConfiguracion(conf);
             frmConfig.setVisible(true);
         }
         
