@@ -52,6 +52,7 @@ public class FrmConfiguracion extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Configuraciones");
 
         jLabel1.setText("Nombre Base de Datos");
 
