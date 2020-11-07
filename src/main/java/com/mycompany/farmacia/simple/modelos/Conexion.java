@@ -14,16 +14,16 @@ import javax.swing.JOptionPane;
  *
  * @author Monica Ranchos y Luis Pérez
  */
-public class conexion {
+public class Conexion {
     String db_url;
     String usuario;
     String clave;
 
-    public conexion() {
+    public Conexion() {
     }
     
     
-    public conexion(String db_url, String username, String password) {
+    public Conexion(String db_url, String username, String password) {
         this.db_url = db_url;
         this.usuario = username;
         this.clave = password;
