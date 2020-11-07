@@ -21,19 +21,33 @@ import jiconfont.swing.IconFontSwing;
  * @author Monica Ranchos y Luis Pérez
  */
 public class Login extends javax.swing.JFrame {
-    private final Connection conn;
-    private final Auth auth;
+    private Connection conn;
+    private Auth auth;    
+
+    public Connection getConn() {
+        return conn;
+    }
+
+    public void setConn(Connection conn) {
+        this.conn = conn;
+    }
+
+    public Auth getAuth() {
+        return auth;
+    }
+
+    public void setAuth(Auth auth) {
+        this.auth = auth;
+    }
     /**
      * Creates new form Login
      * @param cn
      * @param auth
      */
-    public Login(Connection cn, Auth auth) {
+    public Login() {
         initComponents();
         IconFontSwing.register(FontAwesome.getIconFont());
         Icon iconLogin = IconFontSwing.buildIcon(FontAwesome.SIGN_IN, 15);
-        this.conn = cn;
-        this.auth = auth;
         jButton1.setIcon(iconLogin);
     }
 
@@ -117,21 +131,34 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formKeyPressed
 
+    public void cleanTextFields(){
+        jTextField1.setText("");
+        jPasswordField1.setText("");
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String usuario = jTextField1.getText();
         String clave = String.valueOf(jPasswordField1.getPassword());
-        String hashDb;
+        String hashDb,perfil;
+        
+        boolean isAdmin = false;
         String sSQL;
-        sSQL = "SELECT clave FROM empleados where usuario='"+usuario+"';";
+        sSQL = "SELECT clave,fk_perfil FROM empleados where usuario='"+usuario+"';";
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sSQL);
             if(rs.next()){
                 
                 hashDb = rs.getString("clave");
+                perfil = rs.getString("fk_perfil");
                 if(auth.check_pass(clave, hashDb)){
                     JOptionPane.showMessageDialog(rootPane, "Usuario y clave correctos");
+                    if (perfil.equals("2")){
+                        isAdmin = true;
+                    }
+                    FrmDashboard frmDash = new FrmDashboard(isAdmin,this);
+                    frmDash.setVisible(true);
+                    this.setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Usuario o clave incorrectos");
                 }

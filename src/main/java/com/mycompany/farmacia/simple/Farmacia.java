@@ -33,7 +33,9 @@ public class Farmacia {
             db_url = "jdbc:mysql://"+host+":"+port+"/"+db_name;
             conexion mysql = new conexion(db_url, username, password);
             Connection cn = mysql.conectar();
-            Login frmLogin = new Login(cn, auth);
+            Login frmLogin = new Login();
+            frmLogin.setAuth(auth);
+            frmLogin.setConn(cn);
             frmLogin.setVisible(true);
         } else {
             FrmConfiguracion frmConfig = new FrmConfiguracion(conf);
