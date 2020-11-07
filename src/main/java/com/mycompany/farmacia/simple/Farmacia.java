@@ -10,7 +10,7 @@ import com.mycompany.farmacia.simple.vistas.FrmConfiguracion;
 import com.mycompany.farmacia.simple.vistas.Login;
 import com.mycompany.farmacia.simple.controladores.Configuracion;
 import java.sql.Connection;
-import com.mycompany.farmacia.simple.modelos.conexion;
+import com.mycompany.farmacia.simple.modelos.Conexion;
 
 /**
  *
@@ -31,7 +31,7 @@ public class Farmacia {
             port = conf.getPuerto();
             db_name = conf.getDatabase();
             db_url = "jdbc:mysql://"+host+":"+port+"/"+db_name;
-            conexion mysql = new conexion(db_url, username, password);
+            Conexion mysql = new Conexion(db_url, username, password);
             Connection cn = mysql.conectar();
             Login frmLogin = new Login();
             frmLogin.setAuth(auth);
