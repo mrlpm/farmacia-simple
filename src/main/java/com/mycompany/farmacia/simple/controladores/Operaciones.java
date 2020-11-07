@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mycompany.farmacia.simple.modelos;
+package com.mycompany.farmacia.simple.controladores;
 
+import com.mycompany.farmacia.simple.modelos.Proveedores;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.ResultSet;

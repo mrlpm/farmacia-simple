@@ -23,7 +23,7 @@
  */
 package com.mycompany.farmacia.simple.vistas;
 
-import com.mycompany.farmacia.simple.modelos.Operaciones;
+import com.mycompany.farmacia.simple.controladores.Operaciones;
 import com.mycompany.farmacia.simple.modelos.Proveedores;
 import java.sql.Connection;
 import java.util.ArrayList;
