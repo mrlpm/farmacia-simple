@@ -41,8 +41,6 @@ public class Login extends javax.swing.JFrame {
     }
     /**
      * Creates new form Login
-     * @param cn
-     * @param auth
      */
     public Login() {
         initComponents();
@@ -157,6 +155,7 @@ public class Login extends javax.swing.JFrame {
                         isAdmin = true;
                     }
                     FrmDashboard frmDash = new FrmDashboard(isAdmin,this);
+                    frmDash.setConn(conn);
                     frmDash.setVisible(true);
                     this.setVisible(false);
                 } else {
