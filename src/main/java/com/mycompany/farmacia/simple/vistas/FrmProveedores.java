@@ -24,9 +24,7 @@
 package com.mycompany.farmacia.simple.vistas;
 
 import com.mycompany.farmacia.simple.controladores.Operaciones;
-import com.mycompany.farmacia.simple.modelos.Proveedores;
 import java.sql.Connection;
-import java.util.ArrayList;
 import javax.swing.Icon;
 import javax.swing.table.DefaultTableModel;
 import jiconfont.icons.font_awesome.FontAwesome;
@@ -41,21 +39,24 @@ public class FrmProveedores extends javax.swing.JFrame {
     DefaultTableModel modelo = new DefaultTableModel();
     private Connection conn;
     Operaciones ops;
-    ArrayList<Proveedores> prov;
-    Proveedores proveedor;
+
+    /*ArrayList<Proveedores> prov;
+    Proveedores proveedor;*/
 
     public void setConn(Connection conn) {
         this.conn = conn;
     }
-    
-    public void setColumns(){
+
+    public void setColumns() {
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Direccion");
         modelo.addColumn("Telefono");
     }
+
     /**
      * Creates new form FrmProveedores
+     *
      * @param cn
      */
     public FrmProveedores(Connection cn) {
@@ -73,7 +74,7 @@ public class FrmProveedores extends javax.swing.JFrame {
         btnEliminar.setIcon(iconDelete);
         tblProveedor.setModel(modelo);
         setColumns();
-        ops.ConsultarTabla(modelo,"proveedores");
+        ops.ConsultarTabla(modelo, "proveedores");
     }
 
     /**
@@ -240,18 +241,19 @@ public class FrmProveedores extends javax.swing.JFrame {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
         habilitarTextos();
-        if (btnGuardar.getText().equals("Editar")){
+        if (btnGuardar.getText().equals("Editar")) {
             btnGuardar.setText("Guardar");
         }
     }//GEN-LAST:event_btnNuevoActionPerformed
 
-    private void habilitarTextos(){
+    private void habilitarTextos() {
         txtNombre.setEnabled(true);
         txtNombre.grabFocus();
         txtDireccion.setEnabled(true);
         txtTelefono.setEnabled(true);
     }
-    private void limpiarTextos(){
+
+    private void limpiarTextos() {
         txtNombre.setText("");
         txtDireccion.setText("");
         txtTelefono.setText("");
@@ -263,26 +265,26 @@ public class FrmProveedores extends javax.swing.JFrame {
         nombre = txtNombre.getText();
         direccion = txtDireccion.getText();
         telefono = txtTelefono.getText();
-        if (btnGuardar.getText().equals("Guardar")){
+        if (btnGuardar.getText().equals("Guardar")) {
             query = "INSERT INTO proveedores (nombre,direccion,telefono) values ('"
-                +nombre+"','"+direccion+"','"+telefono+"');";
+                    + nombre + "','" + direccion + "','" + telefono + "');";
             ops.Insertar(query, "Proveedor Agregado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo,"proveedores");
+            ops.ConsultarTabla(modelo, "proveedores");
             txtNombre.setEnabled(false);
             txtDireccion.setEnabled(false);
             txtTelefono.setEnabled(false);
             txtBuscar.setEnabled(true);
         }
-        if (btnGuardar.getText().equals("Editar")){
+        if (btnGuardar.getText().equals("Editar")) {
             Integer pk = Integer.parseInt(tblProveedor.getValueAt(tblProveedor.getSelectedRow(), 0).toString());
-            query = "UPDATE proveedores set nombre='"+nombre+"',direccion='"+direccion+"',telefono='"+telefono+"' where pk_proveedores="+pk+";";
+            query = "UPDATE proveedores set nombre='" + nombre + "',direccion='" + direccion + "',telefono='" + telefono + "' where pk_proveedores=" + pk + ";";
             System.out.println(query);
             ops.actualizarRegistro(query, "Proveedor Editado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo,"proveedores");
+            ops.ConsultarTabla(modelo, "proveedores");
             txtNombre.setEnabled(false);
             txtDireccion.setEnabled(false);
             txtTelefono.setEnabled(false);
@@ -292,11 +294,11 @@ public class FrmProveedores extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        String query = "delete from proveedores where nombre='"+txtNombre.getText()+"';";
+        String query = "delete from proveedores where nombre='" + txtNombre.getText() + "';";
         ops.actualizarRegistro(query, "Proveedor Eliminado");
         limpiarTextos();
         modelo.setNumRows(0);
-        ops.ConsultarTabla(modelo,"proveedores");
+        ops.ConsultarTabla(modelo, "proveedores");
         txtNombre.setEnabled(false);
         txtDireccion.setEnabled(false);
         txtTelefono.setEnabled(false);
