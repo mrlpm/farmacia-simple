@@ -26,11 +26,14 @@ package com.mycompany.farmacia.simple.controladores;
 import com.mycompany.farmacia.simple.modelos.Proveedores;
 import java.awt.HeadlessException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -44,52 +47,91 @@ public class Operaciones {
         this.conn = cn;
     }
     
-    public void Insertar(String query){
+    
+    public void ConsultarTabla(DefaultTableModel modelo, String table){
+        String query = "SELECT * FROM "+table+";";
+        Object[] values = null;
+        try {
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            final int columnCount = resultSetMetaData.getColumnCount();
+            while (rs.next()){
+                values = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    values[i - 1] = rs.getObject(i);
+                }
+                modelo.addRow(values);
+            }
+        } catch (SQLException e) {
+        }
+    }
+    
+    public void UltimoRegistro(DefaultTableModel modelo, String table, String PK){
+        String query = "SELECT * FROM "+table+" ORDER BY "+PK+" DESC LIMIT 1;";
+        System.out.println(query);
+        Object[] values = null;
+        try {
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            final int columnCount = resultSetMetaData.getColumnCount();
+            while (rs.next()){
+                values = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    values[i - 1] = rs.getObject(i);
+                }
+                modelo.addRow(values);
+            }
+        } catch (SQLException e) {
+        }
+    }
+    public DefaultTableModel Buscar(String table,String criterio, String objeto){
+        String query = "SELECT * FROM "+table+" where "+criterio+" like '%"+objeto+"%';";
+        System.out.println(query);
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Direccion");
+        modelo.addColumn("Telefono");
+        Object[] values = null;
+        try {
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            final int columnCount = resultSetMetaData.getColumnCount();
+            while (rs.next()){
+                values = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    values[i - 1] = rs.getObject(i);
+                    System.out.println(values[i-1]);
+                }
+                modelo.addRow(values);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return modelo;
+    }
+    
+    public void Insertar(String query, String objeto){
         try {
             Statement stmt = conn.createStatement();
             int n = stmt.executeUpdate(query);
             if (n != 0) {
-                JOptionPane.showMessageDialog(null, "Producto Ingresado");
+                JOptionPane.showMessageDialog(null, objeto);
             }
         }catch (HeadlessException | SQLException e){
             JOptionPane.showMessageDialog(null, e);
         }
     }
-    public void Consultar(String query){
-        try {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()){}
-        } catch (SQLException e) {
-        }
-    }
     
-    public ArrayList<Proveedores> ConsultarProveedores(){
-        String query = "SELECT * FROM proveedores";
-        ArrayList<Proveedores> proveedores = new ArrayList();
-        Proveedores provtmp = new Proveedores();
-        Integer contador = 0;
-        try {
-            Statement stmt = this.conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()){
-                provtmp.setId(rs.getString("pk_proveedores"));
-                provtmp.setNombre(rs.getString("nombre"));
-                provtmp.setDireccion(rs.getString("direccion"));
-                provtmp.setTelefono(rs.getString("telefono"));
-                contador++;
-                proveedores.add(provtmp);
-            }
-        } catch (SQLException e) {
-        }
-        return proveedores;
-    }
-    public void InsertarProveedores(String query, String objeto){
+    public void actualizarRegistro(String query, String objeto) {
         try {
             Statement stmt = conn.createStatement();
             int n = stmt.executeUpdate(query);
             if (n != 0) {
-                JOptionPane.showMessageDialog(null, objeto + " Ingresado");
+                JOptionPane.showMessageDialog(null, objeto);
             }
         }catch (HeadlessException | SQLException e){
             JOptionPane.showMessageDialog(null, e);
