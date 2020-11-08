@@ -36,13 +36,11 @@ import jiconfont.swing.IconFontSwing;
  *
  * @author Monica Ranchos y Luis Pérez
  */
-public class FrmProveedores extends javax.swing.JFrame {
+public class FrmClientes extends javax.swing.JFrame {
 
     DefaultTableModel modelo = new DefaultTableModel();
     private Connection conn;
     Operaciones ops;
-    ArrayList<Proveedores> prov;
-    Proveedores proveedor;
 
     public void setConn(Connection conn) {
         this.conn = conn;
@@ -51,14 +49,14 @@ public class FrmProveedores extends javax.swing.JFrame {
     public void setColumns(){
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
-        modelo.addColumn("Direccion");
+        modelo.addColumn("NIT");
         modelo.addColumn("Telefono");
     }
     /**
      * Creates new form FrmProveedores
      * @param cn
      */
-    public FrmProveedores(Connection cn) {
+    public FrmClientes(Connection cn) {
         this.conn = cn;
         this.ops = new Operaciones(conn);
         IconFontSwing.register(FontAwesome.getIconFont());
@@ -71,9 +69,9 @@ public class FrmProveedores extends javax.swing.JFrame {
         btnGuardar.setIcon(iconSave);
         btnBuscar.setIcon(iconSearch);
         btnEliminar.setIcon(iconDelete);
-        tblProveedor.setModel(modelo);
+        tblClientes.setModel(modelo);
         setColumns();
-        ops.ConsultarTabla(modelo,"proveedores");
+        ops.ConsultarTabla(modelo,"clientes");
     }
 
     /**
@@ -86,36 +84,36 @@ public class FrmProveedores extends javax.swing.JFrame {
     private void initComponents() {
 
         lblNombre = new javax.swing.JLabel();
-        lblDireccion = new javax.swing.JLabel();
+        lblNit = new javax.swing.JLabel();
         lblTelefono = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        txtDireccion = new javax.swing.JTextField();
+        txtNit = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblProveedor = new javax.swing.JTable();
+        tblClientes = new javax.swing.JTable();
         lblBuscar = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Proveedores");
+        setTitle("Clientes");
         setResizable(false);
 
         lblNombre.setText("Nombre");
 
-        lblDireccion.setText("Direccion");
+        lblNit.setText("NIT");
 
         lblTelefono.setText("Telefono");
 
         txtNombre.setEnabled(false);
 
-        txtDireccion.setEnabled(false);
-        txtDireccion.addActionListener(new java.awt.event.ActionListener() {
+        txtNit.setEnabled(false);
+        txtNit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDireccionActionPerformed(evt);
+                txtNitActionPerformed(evt);
             }
         });
 
@@ -154,7 +152,7 @@ public class FrmProveedores extends javax.swing.JFrame {
             }
         });
 
-        tblProveedor.setModel(new javax.swing.table.DefaultTableModel(
+        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -165,12 +163,12 @@ public class FrmProveedores extends javax.swing.JFrame {
 
             }
         ));
-        tblProveedor.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblProveedorMouseClicked(evt);
+                tblClientesMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblProveedor);
+        jScrollPane1.setViewportView(tblClientes);
 
         lblBuscar.setText("Buscar");
 
@@ -184,7 +182,7 @@ public class FrmProveedores extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNuevo)
                     .addComponent(lblNombre)
-                    .addComponent(lblDireccion)
+                    .addComponent(lblNit)
                     .addComponent(lblTelefono)
                     .addComponent(lblBuscar))
                 .addGap(18, 18, 18)
@@ -196,7 +194,7 @@ public class FrmProveedores extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnEliminar))
                     .addComponent(txtNombre)
-                    .addComponent(txtDireccion)
+                    .addComponent(txtNit)
                     .addComponent(txtTelefono)
                     .addComponent(txtBuscar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -210,8 +208,8 @@ public class FrmProveedores extends javax.swing.JFrame {
                     .addComponent(lblNombre))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDireccion))
+                    .addComponent(txtNit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNit))
                 .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -233,9 +231,9 @@ public class FrmProveedores extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDireccionActionPerformed
+    private void txtNitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNitActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDireccionActionPerformed
+    }//GEN-LAST:event_txtNitActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
@@ -248,43 +246,43 @@ public class FrmProveedores extends javax.swing.JFrame {
     private void habilitarTextos(){
         txtNombre.setEnabled(true);
         txtNombre.grabFocus();
-        txtDireccion.setEnabled(true);
+        txtNit.setEnabled(true);
         txtTelefono.setEnabled(true);
     }
     private void limpiarTextos(){
         txtNombre.setText("");
-        txtDireccion.setText("");
+        txtNit.setText("");
         txtTelefono.setText("");
         txtBuscar.setText("");
     }
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling
-        String query, nombre, direccion, telefono;
+        String query, nombre, nit, telefono;
         nombre = txtNombre.getText();
-        direccion = txtDireccion.getText();
+        nit = txtNit.getText();
         telefono = txtTelefono.getText();
         if (btnGuardar.getText().equals("Guardar")){
-            query = "INSERT INTO proveedores (nombre,direccion,telefono) values ('"
-                +nombre+"','"+direccion+"','"+telefono+"');";
-            ops.Insertar(query, "Proveedor Agregado");
+            query = "INSERT INTO clientes (nombre,nit,telefono) values ('"
+                +nombre+"','"+nit+"','"+telefono+"');";
+            ops.Insertar(query, "Cliente Agregado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo,"proveedores");
+            ops.ConsultarTabla(modelo,"clientes");
             txtNombre.setEnabled(false);
-            txtDireccion.setEnabled(false);
+            txtNit.setEnabled(false);
             txtTelefono.setEnabled(false);
             txtBuscar.setEnabled(true);
         }
         if (btnGuardar.getText().equals("Editar")){
-            Integer pk = Integer.parseInt(tblProveedor.getValueAt(tblProveedor.getSelectedRow(), 0).toString());
-            query = "UPDATE proveedores set nombre='"+nombre+"',direccion='"+direccion+"',telefono='"+telefono+"' where pk_proveedores="+pk+";";
+            Integer pk = Integer.parseInt(tblClientes.getValueAt(tblClientes.getSelectedRow(), 0).toString());
+            query = "UPDATE clientes set nombre='"+nombre+"',nit='"+nit+"',telefono='"+telefono+"' where pk_clientes="+pk+";";
             System.out.println(query);
-            ops.actualizarRegistro(query, "Proveedor Editado");
+            ops.actualizarRegistro(query, "Cliente Editado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo,"proveedores");
+            ops.ConsultarTabla(modelo,"clientes");
             txtNombre.setEnabled(false);
-            txtDireccion.setEnabled(false);
+            txtNit.setEnabled(false);
             txtTelefono.setEnabled(false);
             txtBuscar.setEnabled(true);
         }
@@ -292,13 +290,13 @@ public class FrmProveedores extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        String query = "delete from proveedores where nombre='"+txtNombre.getText()+"';";
-        ops.actualizarRegistro(query, "Proveedor Eliminado");
+        String query = "delete from clientes where nombre='"+txtNombre.getText()+"';";
+        ops.actualizarRegistro(query, "Cliente Eliminado");
         limpiarTextos();
         modelo.setNumRows(0);
-        ops.ConsultarTabla(modelo,"proveedores");
+        ops.ConsultarTabla(modelo,"clientes");
         txtNombre.setEnabled(false);
-        txtDireccion.setEnabled(false);
+        txtNit.setEnabled(false);
         txtTelefono.setEnabled(false);
         txtBuscar.setEnabled(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -311,20 +309,20 @@ public class FrmProveedores extends javax.swing.JFrame {
         // TODO add your handling code here:
         String word = txtBuscar.getText();
         setColumns();
-        modelo = ops.Buscar("proveedores", "nombre", word);
-        tblProveedor.setModel(modelo);
+        modelo = ops.Buscar("clientes", "nombre", word);
+        tblClientes.setModel(modelo);
         limpiarTextos();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void tblProveedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProveedorMouseClicked
+    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
         // TODO add your handling code here:
-        Integer fila_seleccionada = tblProveedor.getSelectedRow();
-        txtNombre.setText(tblProveedor.getValueAt(fila_seleccionada, 1).toString());
-        txtDireccion.setText(tblProveedor.getValueAt(fila_seleccionada, 2).toString());
-        txtTelefono.setText(tblProveedor.getValueAt(fila_seleccionada, 3).toString());
+        Integer fila_seleccionada = tblClientes.getSelectedRow();
+        txtNombre.setText(tblClientes.getValueAt(fila_seleccionada, 1).toString());
+        txtNit.setText(tblClientes.getValueAt(fila_seleccionada, 2).toString());
+        txtTelefono.setText(tblClientes.getValueAt(fila_seleccionada, 3).toString());
         habilitarTextos();
         btnGuardar.setText("Editar");
-    }//GEN-LAST:event_tblProveedorMouseClicked
+    }//GEN-LAST:event_tblClientesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
@@ -333,12 +331,12 @@ public class FrmProveedores extends javax.swing.JFrame {
     private javax.swing.JButton btnNuevo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblBuscar;
-    private javax.swing.JLabel lblDireccion;
+    private javax.swing.JLabel lblNit;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTelefono;
-    private javax.swing.JTable tblProveedor;
+    private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtBuscar;
-    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtNit;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
