@@ -150,7 +150,7 @@ public class Login extends javax.swing.JFrame {
                 hashDb = rs.getString("clave");
                 perfil = rs.getString("fk_perfil");
                 if(auth.check_pass(clave, hashDb)){
-                    JOptionPane.showMessageDialog(rootPane, "Usuario y clave correctos");
+                    //JOptionPane.showMessageDialog(rootPane, "Usuario y clave correctos");
                     if (perfil.equals("2")){
                         isAdmin = true;
                     }
