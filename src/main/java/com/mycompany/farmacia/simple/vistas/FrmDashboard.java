@@ -24,11 +24,9 @@
 
 package com.mycompany.farmacia.simple.vistas;
 
-import com.mycompany.farmacia.simple.controladores.Auth;
 import java.awt.Color;
 import java.sql.Connection;
 import javax.swing.Icon;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import jiconfont.icons.font_awesome.FontAwesome;
 import jiconfont.swing.IconFontSwing;
@@ -393,6 +391,8 @@ public class FrmDashboard extends javax.swing.JFrame {
 
     private void pnlClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlClientesMouseClicked
         // TODO add your handling code here:
+        FrmClientes frmClientes = new FrmClientes(this.conn);
+        frmClientes.setVisible(true);
     }//GEN-LAST:event_pnlClientesMouseClicked
 
     private void pnlEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlEmpleadosMouseClicked
