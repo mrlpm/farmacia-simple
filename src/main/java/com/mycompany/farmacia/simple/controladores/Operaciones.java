@@ -23,10 +23,8 @@
  */
 package com.mycompany.farmacia.simple.controladores;
 
-import com.mycompany.farmacia.simple.modelos.Proveedores;
 import java.awt.HeadlessException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -47,9 +45,44 @@ public class Operaciones {
         this.conn = cn;
     }
     
+    public ArrayList<String> getPerfiles(){
+        String query = "SELECT nombre FROM perfiles";
+        ArrayList<String> perfiles = new ArrayList();
+        try {
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                perfiles.add(rs.getString("nombre"));
+            }
+        } catch (Exception e) {
+        }
+        return perfiles;
+    }
     
-    public void ConsultarTabla(DefaultTableModel modelo, String table){
-        String query = "SELECT * FROM "+table+";";
+    public void ConsultarTabla(DefaultTableModel modelo, String table, String columnas){
+        String query = "SELECT "+columnas+" FROM "+table+";";
+        Object[] values = null;
+        try {
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            final int columnCount = resultSetMetaData.getColumnCount();
+            while (rs.next()){
+                values = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    values[i - 1] = rs.getObject(i);
+                }
+                modelo.addRow(values);
+            }
+        } catch (SQLException e) {
+        }
+    }
+
+    public void ConsultarTablaEmpleados(DefaultTableModel modelo){
+        //String query = "SELECT "+columnas+" FROM "+table+";";
+        String query = "SELECT p.pk_empleado,p.nombres,p.apellidos,p.usuario,rb.nombre"
+                + " FROM empleados p INNER JOIN perfiles rb ON p.fk_perfil = rb.pk_perfiles;";
+        System.out.println(query);
         Object[] values = null;
         try {
             Statement stmt = this.conn.createStatement();
@@ -86,14 +119,13 @@ public class Operaciones {
         } catch (SQLException e) {
         }
     }
-    public DefaultTableModel Buscar(String table,String criterio, String objeto){
+    public DefaultTableModel Buscar(ArrayList<String> columnas, String table,String criterio, String objeto){
         String query = "SELECT * FROM "+table+" where "+criterio+" like '%"+objeto+"%';";
         System.out.println(query);
         DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Direccion");
-        modelo.addColumn("Telefono");
+        for (Object columna : columnas) {
+            modelo.addColumn(columna);
+        }
         Object[] values = null;
         try {
             Statement stmt = this.conn.createStatement();

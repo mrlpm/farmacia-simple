@@ -154,7 +154,7 @@ public class Login extends javax.swing.JFrame {
                     if (perfil.equals("2")){
                         isAdmin = true;
                     }
-                    FrmDashboard frmDash = new FrmDashboard(isAdmin,this);
+                    FrmDashboard frmDash = new FrmDashboard(isAdmin, this, usuario);
                     frmDash.setConn(conn);
                     frmDash.setVisible(true);
                     this.setVisible(false);

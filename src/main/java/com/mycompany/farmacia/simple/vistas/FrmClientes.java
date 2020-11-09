@@ -27,6 +27,7 @@ import com.mycompany.farmacia.simple.controladores.Operaciones;
 import com.mycompany.farmacia.simple.modelos.Proveedores;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.Icon;
 import javax.swing.table.DefaultTableModel;
 import jiconfont.icons.font_awesome.FontAwesome;
@@ -41,7 +42,8 @@ public class FrmClientes extends javax.swing.JFrame {
     DefaultTableModel modelo = new DefaultTableModel();
     private Connection conn;
     Operaciones ops;
-
+    String dbColumnas = "pk_clientes,nombre,nit,telefono";
+    
     public void setConn(Connection conn) {
         this.conn = conn;
     }
@@ -71,7 +73,7 @@ public class FrmClientes extends javax.swing.JFrame {
         btnEliminar.setIcon(iconDelete);
         tblClientes.setModel(modelo);
         setColumns();
-        ops.ConsultarTabla(modelo,"clientes");
+        ops.ConsultarTabla(modelo,"clientes",dbColumnas);
     }
 
     /**
@@ -267,7 +269,7 @@ public class FrmClientes extends javax.swing.JFrame {
             ops.Insertar(query, "Cliente Agregado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo,"clientes");
+            ops.ConsultarTabla(modelo,"clientes",dbColumnas);
             txtNombre.setEnabled(false);
             txtNit.setEnabled(false);
             txtTelefono.setEnabled(false);
@@ -280,7 +282,7 @@ public class FrmClientes extends javax.swing.JFrame {
             ops.actualizarRegistro(query, "Cliente Editado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo,"clientes");
+            ops.ConsultarTabla(modelo,"clientes",dbColumnas);
             txtNombre.setEnabled(false);
             txtNit.setEnabled(false);
             txtTelefono.setEnabled(false);
@@ -294,7 +296,7 @@ public class FrmClientes extends javax.swing.JFrame {
         ops.actualizarRegistro(query, "Cliente Eliminado");
         limpiarTextos();
         modelo.setNumRows(0);
-        ops.ConsultarTabla(modelo,"clientes");
+        ops.ConsultarTabla(modelo,"clientes",dbColumnas);
         txtNombre.setEnabled(false);
         txtNit.setEnabled(false);
         txtTelefono.setEnabled(false);
@@ -309,7 +311,8 @@ public class FrmClientes extends javax.swing.JFrame {
         // TODO add your handling code here:
         String word = txtBuscar.getText();
         setColumns();
-        modelo = ops.Buscar("clientes", "nombre", word);
+        ArrayList<String> columnas = new ArrayList<String>(Arrays.asList("ID","Nombre","NIT","Telefono"));
+        modelo = ops.Buscar(columnas, "clientes", "nombre", word);
         tblClientes.setModel(modelo);
         limpiarTextos();
     }//GEN-LAST:event_btnBuscarActionPerformed

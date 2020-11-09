@@ -25,6 +25,8 @@ package com.mycompany.farmacia.simple.vistas;
 
 import com.mycompany.farmacia.simple.controladores.Operaciones;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.Icon;
 import javax.swing.table.DefaultTableModel;
 import jiconfont.icons.font_awesome.FontAwesome;
@@ -39,10 +41,8 @@ public class FrmProveedores extends javax.swing.JFrame {
     DefaultTableModel modelo = new DefaultTableModel();
     private Connection conn;
     Operaciones ops;
-
-    /*ArrayList<Proveedores> prov;
-    Proveedores proveedor;*/
-
+    String dbColumnas = "pk_proveedores,nombre,direccion,telefono";
+            
     public void setConn(Connection conn) {
         this.conn = conn;
     }
@@ -74,7 +74,7 @@ public class FrmProveedores extends javax.swing.JFrame {
         btnEliminar.setIcon(iconDelete);
         tblProveedor.setModel(modelo);
         setColumns();
-        ops.ConsultarTabla(modelo, "proveedores");
+        ops.ConsultarTabla(modelo, "proveedores",dbColumnas);
     }
 
     /**
@@ -271,7 +271,7 @@ public class FrmProveedores extends javax.swing.JFrame {
             ops.Insertar(query, "Proveedor Agregado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo, "proveedores");
+            ops.ConsultarTabla(modelo, "proveedores",dbColumnas);
             txtNombre.setEnabled(false);
             txtDireccion.setEnabled(false);
             txtTelefono.setEnabled(false);
@@ -284,7 +284,7 @@ public class FrmProveedores extends javax.swing.JFrame {
             ops.actualizarRegistro(query, "Proveedor Editado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo, "proveedores");
+            ops.ConsultarTabla(modelo, "proveedores",dbColumnas);
             txtNombre.setEnabled(false);
             txtDireccion.setEnabled(false);
             txtTelefono.setEnabled(false);
@@ -298,7 +298,7 @@ public class FrmProveedores extends javax.swing.JFrame {
         ops.actualizarRegistro(query, "Proveedor Eliminado");
         limpiarTextos();
         modelo.setNumRows(0);
-        ops.ConsultarTabla(modelo, "proveedores");
+        ops.ConsultarTabla(modelo, "proveedores",dbColumnas);
         txtNombre.setEnabled(false);
         txtDireccion.setEnabled(false);
         txtTelefono.setEnabled(false);
@@ -313,7 +313,8 @@ public class FrmProveedores extends javax.swing.JFrame {
         // TODO add your handling code here:
         String word = txtBuscar.getText();
         setColumns();
-        modelo = ops.Buscar("proveedores", "nombre", word);
+        ArrayList<String> columnas = new ArrayList<String>(Arrays.asList("ID","Nombre","Direccion","Telefono"));
+        modelo = ops.Buscar(columnas, "proveedores", "nombre", word);
         tblProveedor.setModel(modelo);
         limpiarTextos();
     }//GEN-LAST:event_btnBuscarActionPerformed
