@@ -164,6 +164,32 @@ public class Operaciones {
         return modelo;
     }
     
+    public DefaultTableModel buscarGenerico(ArrayList<String> columnas, String query){
+        System.out.println(query);
+        DefaultTableModel modelo = new DefaultTableModel();
+        for (Object columna : columnas) {
+            modelo.addColumn(columna);
+        }
+        Object[] values = null;
+        try {
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            final int columnCount = resultSetMetaData.getColumnCount();
+            while (rs.next()){
+                values = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    values[i - 1] = rs.getObject(i);
+                    System.out.println(values[i-1]);
+                }
+                modelo.addRow(values);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return modelo;
+    }
+    
     public void Insertar(String query, String objeto){
         try {
             Statement stmt = conn.createStatement();

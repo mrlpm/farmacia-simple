@@ -31,7 +31,6 @@ import java.util.Arrays;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import jiconfont.icons.font_awesome.FontAwesome;
 import jiconfont.swing.IconFontSwing;
@@ -318,10 +317,12 @@ public class FrmEmpleados extends javax.swing.JFrame {
         usuario = txtUsuario.getText();
         clave = auth.hash_pass(String.valueOf(txtClave.getPassword()));
         perfil = cmbPerfil.getSelectedItem().toString();
+        String fk_perfil = "SELECT pk_perfiles from perfiles where nombre='"+perfil+"'";
         if (btnGuardar.getText().equals("Guardar")){
-            String fk_perfil = "SELECT * from perfiles where nombre='"+perfil+"';";
-            query = "INSERT INTO empleados (nombre,apellidos,usuario,clave,fk_perfil) values ('"
+            
+            query = "INSERT INTO empleados (nombres,apellidos,usuario,clave,fk_perfil) values ('"
                 +nombre+"','"+apellidos+"','"+usuario+"','"+clave+"',("+fk_perfil+"));";
+            System.out.println(query);
             ops.Insertar(query, "Empleado Agregado");
             limpiarTextos();
             modelo.setNumRows(0);
@@ -333,7 +334,7 @@ public class FrmEmpleados extends javax.swing.JFrame {
         }
         if (btnGuardar.getText().equals("Editar")){
             Integer pk = Integer.parseInt(tblClientes.getValueAt(tblClientes.getSelectedRow(), 0).toString());
-            query = "UPDATE empleados set nombre='"+nombre+"',apellidos='"+apellidos+"',usuario='"+usuario+"','"+perfil+"' where pk_empleado="+pk+";";
+            query = "UPDATE empleados set nombres='"+nombre+"',apellidos='"+apellidos+"',usuario='"+usuario+"',fk_perfil=("+fk_perfil+") where pk_empleado="+pk+";";
             System.out.println(query);
             ops.actualizarRegistro(query, "Empleado Editado");
             limpiarTextos();
@@ -348,7 +349,7 @@ public class FrmEmpleados extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        String query = "delete from empleados where nombre='"+txtNombres.getText()+"';";
+        String query = "delete from empleados where nombres='"+txtNombres.getText()+"';";
         ops.actualizarRegistro(query, "Empleado Eliminado");
         limpiarTextos();
         modelo.setNumRows(0);
@@ -368,7 +369,11 @@ public class FrmEmpleados extends javax.swing.JFrame {
         String word = txtBuscar.getText();
         setColumns();
         ArrayList<String> columnas = new ArrayList<String>(Arrays.asList("ID","Nombres","Apellidos","Usuario","Perfil"));
-        modelo = ops.Buscar(columnas, "empleados", "nombre", word);
+        String queryBuscar = "SELECT p.pk_empleado,p.nombres,p.apellidos,p.usuario,rb.nombre "
+            + "FROM empleados p INNER JOIN perfiles rb ON "
+            + "p.fk_perfil = rb.pk_perfiles where p.nombres like '%"+word+"%';";
+        //modelo = ops.Buscar(columnas, "empleados", "nombres", word);
+        modelo = ops.buscarGenerico(columnas, queryBuscar);
         tblClientes.setModel(modelo);
         limpiarTextos();
     }//GEN-LAST:event_btnBuscarActionPerformed
