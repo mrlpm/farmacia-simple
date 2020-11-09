@@ -42,7 +42,8 @@ public class FrmProveedores extends javax.swing.JFrame {
     private Connection conn;
     Operaciones ops;
     String dbColumnas = "pk_proveedores,nombre,direccion,telefono";
-            
+    String queryAll = "SELECT "+dbColumnas+" FROM proveedores;";
+    
     public void setConn(Connection conn) {
         this.conn = conn;
     }
@@ -74,7 +75,7 @@ public class FrmProveedores extends javax.swing.JFrame {
         btnEliminar.setIcon(iconDelete);
         tblProveedor.setModel(modelo);
         setColumns();
-        ops.ConsultarTabla(modelo, "proveedores",dbColumnas);
+        ops.consultaGenerica(modelo, queryAll);
     }
 
     /**
@@ -271,7 +272,7 @@ public class FrmProveedores extends javax.swing.JFrame {
             ops.Insertar(query, "Proveedor Agregado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo, "proveedores",dbColumnas);
+            ops.consultaGenerica(modelo, queryAll);
             txtNombre.setEnabled(false);
             txtDireccion.setEnabled(false);
             txtTelefono.setEnabled(false);
@@ -284,7 +285,7 @@ public class FrmProveedores extends javax.swing.JFrame {
             ops.actualizarRegistro(query, "Proveedor Editado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo, "proveedores",dbColumnas);
+            ops.consultaGenerica(modelo, queryAll);
             txtNombre.setEnabled(false);
             txtDireccion.setEnabled(false);
             txtTelefono.setEnabled(false);
@@ -298,7 +299,7 @@ public class FrmProveedores extends javax.swing.JFrame {
         ops.actualizarRegistro(query, "Proveedor Eliminado");
         limpiarTextos();
         modelo.setNumRows(0);
-        ops.ConsultarTabla(modelo, "proveedores",dbColumnas);
+        ops.consultaGenerica(modelo, queryAll);
         txtNombre.setEnabled(false);
         txtDireccion.setEnabled(false);
         txtTelefono.setEnabled(false);
@@ -313,7 +314,7 @@ public class FrmProveedores extends javax.swing.JFrame {
         // TODO add your handling code here:
         String word = txtBuscar.getText();
         setColumns();
-        ArrayList<String> columnas = new ArrayList<String>(Arrays.asList("ID","Nombre","Direccion","Telefono"));
+        ArrayList<String> columnas = new ArrayList<>(Arrays.asList("ID","Nombre","Direccion","Telefono"));
         modelo = ops.Buscar(columnas, "proveedores", "nombre", word);
         tblProveedor.setModel(modelo);
         limpiarTextos();

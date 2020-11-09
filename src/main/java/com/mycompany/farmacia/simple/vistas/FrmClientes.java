@@ -43,6 +43,7 @@ public class FrmClientes extends javax.swing.JFrame {
     private Connection conn;
     Operaciones ops;
     String dbColumnas = "pk_clientes,nombre,nit,telefono";
+    String queryAll = "SELECT "+dbColumnas+" FROM clientes;";
     
     public void setConn(Connection conn) {
         this.conn = conn;
@@ -73,7 +74,7 @@ public class FrmClientes extends javax.swing.JFrame {
         btnEliminar.setIcon(iconDelete);
         tblClientes.setModel(modelo);
         setColumns();
-        ops.ConsultarTabla(modelo,"clientes",dbColumnas);
+        ops.consultaGenerica(modelo, queryAll);
     }
 
     /**
@@ -269,7 +270,7 @@ public class FrmClientes extends javax.swing.JFrame {
             ops.Insertar(query, "Cliente Agregado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo,"clientes",dbColumnas);
+            ops.consultaGenerica(modelo, queryAll);
             txtNombre.setEnabled(false);
             txtNit.setEnabled(false);
             txtTelefono.setEnabled(false);
@@ -282,7 +283,7 @@ public class FrmClientes extends javax.swing.JFrame {
             ops.actualizarRegistro(query, "Cliente Editado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTabla(modelo,"clientes",dbColumnas);
+            ops.consultaGenerica(modelo, queryAll);
             txtNombre.setEnabled(false);
             txtNit.setEnabled(false);
             txtTelefono.setEnabled(false);
@@ -296,7 +297,7 @@ public class FrmClientes extends javax.swing.JFrame {
         ops.actualizarRegistro(query, "Cliente Eliminado");
         limpiarTextos();
         modelo.setNumRows(0);
-        ops.ConsultarTabla(modelo,"clientes",dbColumnas);
+        ops.consultaGenerica(modelo, queryAll);
         txtNombre.setEnabled(false);
         txtNit.setEnabled(false);
         txtTelefono.setEnabled(false);

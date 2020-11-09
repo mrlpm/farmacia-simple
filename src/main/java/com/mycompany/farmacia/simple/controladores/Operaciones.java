@@ -59,6 +59,24 @@ public class Operaciones {
         return perfiles;
     }
     
+    public void consultaGenerica(DefaultTableModel modelo, String query){
+        Object[] values = null;
+        try {
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            final int columnCount = resultSetMetaData.getColumnCount();
+            while (rs.next()){
+                values = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    values[i - 1] = rs.getObject(i);
+                }
+                modelo.addRow(values);
+            }
+        } catch (SQLException e) {
+        }
+    }
+    
     public void ConsultarTabla(DefaultTableModel modelo, String table, String columnas){
         String query = "SELECT "+columnas+" FROM "+table+";";
         Object[] values = null;

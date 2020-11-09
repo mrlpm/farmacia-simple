@@ -47,6 +47,8 @@ public class FrmEmpleados extends javax.swing.JFrame {
     Operaciones ops;
     ArrayList<String> perfiles = new ArrayList();
     Auth auth = new Auth();
+    String queryAll = "SELECT p.pk_empleado,p.nombres,p.apellidos,p.usuario,rb.nombre"
+            + " FROM empleados p INNER JOIN perfiles rb ON p.fk_perfil = rb.pk_perfiles;";
 
     public void setConn(Connection conn) {
         this.conn = conn;
@@ -80,7 +82,7 @@ public class FrmEmpleados extends javax.swing.JFrame {
         btnCambiar.setIcon(iconChange);
         tblClientes.setModel(modelo);
         setColumns();
-        ops.ConsultarTablaEmpleados(modelo);
+        ops.consultaGenerica(modelo, queryAll);
         perfiles = ops.getPerfiles();
         for(Object perfil : perfiles){
             cmbPerfil.addItem(perfil.toString());
@@ -323,7 +325,7 @@ public class FrmEmpleados extends javax.swing.JFrame {
             ops.Insertar(query, "Empleado Agregado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTablaEmpleados(modelo);
+            ops.consultaGenerica(modelo, queryAll);
             txtNombres.setEnabled(false);
             txtApellidos.setEnabled(false);
             txtUsuario.setEnabled(false);
@@ -336,7 +338,7 @@ public class FrmEmpleados extends javax.swing.JFrame {
             ops.actualizarRegistro(query, "Empleado Editado");
             limpiarTextos();
             modelo.setNumRows(0);
-            ops.ConsultarTablaEmpleados(modelo);
+            ops.consultaGenerica(modelo, queryAll);
             txtNombres.setEnabled(false);
             txtApellidos.setEnabled(false);
             txtUsuario.setEnabled(false);
@@ -350,7 +352,7 @@ public class FrmEmpleados extends javax.swing.JFrame {
         ops.actualizarRegistro(query, "Empleado Eliminado");
         limpiarTextos();
         modelo.setNumRows(0);
-        ops.ConsultarTablaEmpleados(modelo);
+        ops.consultaGenerica(modelo, queryAll);
         txtNombres.setEnabled(false);
         txtApellidos.setEnabled(false);
         txtUsuario.setEnabled(false);
