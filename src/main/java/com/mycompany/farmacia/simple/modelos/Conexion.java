@@ -36,6 +36,7 @@ public class Conexion {
             link = DriverManager.getConnection(this.db_url, this.usuario, this.clave);
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
+            System.exit(1);
         }
         return link;
     }
