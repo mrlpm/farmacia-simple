@@ -42,8 +42,8 @@ public class FrmProveedores extends javax.swing.JFrame {
     private Connection conn;
     Operaciones ops;
     String dbColumnas = "pk_proveedores,nombre,direccion,telefono";
-    String queryAll = "SELECT "+dbColumnas+" FROM proveedores;";
-    
+    String queryAll = "SELECT " + dbColumnas + " FROM proveedores;";
+
     public void setConn(Connection conn) {
         this.conn = conn;
     }
@@ -314,7 +314,7 @@ public class FrmProveedores extends javax.swing.JFrame {
         // TODO add your handling code here:
         String word = txtBuscar.getText();
         setColumns();
-        ArrayList<String> columnas = new ArrayList<>(Arrays.asList("ID","Nombre","Direccion","Telefono"));
+        ArrayList<String> columnas = new ArrayList<>(Arrays.asList("ID", "Nombre", "Direccion", "Telefono"));
         modelo = ops.Buscar(columnas, "proveedores", "nombre", word);
         tblProveedor.setModel(modelo);
         limpiarTextos();
