@@ -202,12 +202,12 @@ public class Operaciones {
         }
     }
     
-    public void actualizarRegistro(String query, String objeto) {
+    public void actualizarRegistro(String query, String mensaje) {
         try {
             Statement stmt = conn.createStatement();
             int n = stmt.executeUpdate(query);
             if (n != 0) {
-                JOptionPane.showMessageDialog(null, objeto);
+                JOptionPane.showMessageDialog(null, mensaje);
             }
         }catch (HeadlessException | SQLException e){
             JOptionPane.showMessageDialog(null, e);
