@@ -23,9 +23,7 @@
  */
 package com.mycompany.farmacia.simple.controladores;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -119,12 +117,12 @@ public class Configuracion {
     public void Leer(){
         try {
             Ini iniFile = new Ini(new File(this.rutaFile.toString()));
-            Ini.Section seccion = iniFile.get("database");
-            this.setUsuario(seccion.get("usuario"));
-            this.setClave(seccion.get("clave"));
-            this.setServidor(seccion.get("servidor"));
-            this.setPuerto(seccion.get("puerto"));
-            this.setDatabase(seccion.get("base"));
+            //Ini.Section seccion = iniFile.get("database");
+            this.setUsuario(iniFile.get("database","usuario"));
+            this.setClave(iniFile.get("database","clave"));
+            this.setServidor(iniFile.get("database","servidor"));
+            this.setPuerto(iniFile.get("database","puerto"));
+            this.setDatabase(iniFile.get("database","base"));
         } catch (IOException ex) {
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
         }
