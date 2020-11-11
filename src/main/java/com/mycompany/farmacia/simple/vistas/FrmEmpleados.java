@@ -384,23 +384,32 @@ public class FrmEmpleados extends javax.swing.JFrame {
         txtNombres.setText(tblClientes.getValueAt(fila_seleccionada, 1).toString());
         txtApellidos.setText(tblClientes.getValueAt(fila_seleccionada, 2).toString());
         txtUsuario.setText(tblClientes.getValueAt(fila_seleccionada, 3).toString());
+        cmbPerfil.setSelectedItem(tblClientes.getValueAt(fila_seleccionada, 4).toString());
+        
         habilitarTextos(false);
         btnGuardar.setText("Editar");
     }//GEN-LAST:event_tblClientesMouseClicked
 
     private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
         // TODO add your handling code here:
-        JPasswordField passField = new JPasswordField();
-        JPasswordField passFieldConfirm = new JPasswordField();
-        String message = "Por favor ingresa la nueva clave 2 veces";
-        int result = JOptionPane.showOptionDialog(rootPane, new Object[] {message, passField, passFieldConfirm},
-        "Cambio de Clave", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-        if (result == JOptionPane.OK_OPTION){
-            if(passField.getPassword().equals(passFieldConfirm.getPassword())){
-                String clave = auth.hash_pass(String.valueOf(txtClave.getPassword()));
-                //String query = "UPDATE empleados set clave="+clave+" where pk_empleado="+pk+";";
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Clave no coincide");
+        if (txtUsuario.getText().isEmpty()){
+            JOptionPane.showMessageDialog(rootPane, "Debes seleccionar un usuario");
+        } else {
+            String usuario = txtUsuario.getText();
+            JPasswordField passField = new JPasswordField();
+            JPasswordField passFieldConfirm = new JPasswordField();
+            String message = "Por favor ingresa la nueva clave 2 veces";
+            int result = JOptionPane.showOptionDialog(rootPane, new Object[] {message, passField, passFieldConfirm},
+            "Cambio de Clave", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if (result == JOptionPane.OK_OPTION){
+                if(Arrays.equals(passField.getPassword(), passFieldConfirm.getPassword())){
+                    String clave = auth.hash_pass(String.valueOf(passField.getPassword()));
+                    String query = "UPDATE empleados set clave='"+clave+"' where usuario='"+usuario+"';";
+                    ops.actualizarRegistro(query, "Clave Cambiada");
+                    //String query = "UPDATE empleados set clave="+clave+" where pk_empleado="+pk+";";
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Clave no coincide");
+                }
             }
         }
     }//GEN-LAST:event_btnCambiarActionPerformed
