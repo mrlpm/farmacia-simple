@@ -64,7 +64,7 @@ public class FrmEmpleados extends javax.swing.JFrame {
      * Creates new form FrmProveedores
      * @param cn
      */
-    public FrmEmpleados(Connection cn, String empleado) {
+    public FrmEmpleados(Connection cn) {
         this.conn = cn;
         this.ops = new Operaciones(conn);
         IconFontSwing.register(FontAwesome.getIconFont());
