@@ -39,32 +39,36 @@ import jiconfont.swing.IconFontSwing;
  *
  * @author Monica Ranchos y Luis Pérez
  */
-public class FrmEmpleados extends javax.swing.JFrame {
+public class FrmInventario extends javax.swing.JFrame {
 
     DefaultTableModel modelo = new DefaultTableModel();
     private Connection conn;
     Operaciones ops;
-    ArrayList<String> perfiles = new ArrayList();
+    ArrayList<String> proveedores = new ArrayList();
     Auth auth = new Auth();
-    String queryAll = "SELECT p.pk_empleado,p.nombres,p.apellidos,p.usuario,rb.nombre"
-            + " FROM empleados p INNER JOIN perfiles rb ON p.fk_perfil = rb.pk_perfiles;";
+    String queryAll = "SELECT "
+            + "p.pk_inventario,p.producto,p.descripcion,p.cantidad,p.precio,rb.nombre "
+            + "FROM inventario p INNER JOIN proveedores rb ON p.fk_proveedores = rb.pk_proveedores;";
 
     public void setConn(Connection conn) {
         this.conn = conn;
     }
-    
-    public void setColumns(){
+
+    public void setColumns() {
         modelo.addColumn("ID");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Apellidos");
-        modelo.addColumn("Usuario");
-        modelo.addColumn("Perfil");
+        modelo.addColumn("Producto");
+        modelo.addColumn("Descripcion");
+        modelo.addColumn("Cantidad");
+        modelo.addColumn("Precio");
+        modelo.addColumn("Proveedor");
     }
+
     /**
      * Creates new form FrmProveedores
+     *
      * @param cn
      */
-    public FrmEmpleados(Connection cn) {
+    public FrmInventario(Connection cn) {
         this.conn = cn;
         this.ops = new Operaciones(conn);
         IconFontSwing.register(FontAwesome.getIconFont());
@@ -78,13 +82,13 @@ public class FrmEmpleados extends javax.swing.JFrame {
         btnGuardar.setIcon(iconSave);
         btnBuscar.setIcon(iconSearch);
         btnEliminar.setIcon(iconDelete);
-        btnCambiar.setIcon(iconChange);
-        tblClientes.setModel(modelo);
+
+        tblInventario.setModel(modelo);
         setColumns();
         ops.consultaGenerica(modelo, queryAll);
-        perfiles = ops.getPerfiles();
-        for(Object perfil : perfiles){
-            cmbPerfil.addItem(perfil.toString());
+        proveedores = ops.getProveedores();
+        for (Object proveedor : proveedores) {
+            cmbProveedor.addItem(proveedor.toString());
         }
     }
 
@@ -97,49 +101,42 @@ public class FrmEmpleados extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblNombres = new javax.swing.JLabel();
-        lblApellidos = new javax.swing.JLabel();
-        lblUsuario = new javax.swing.JLabel();
-        txtNombres = new javax.swing.JTextField();
-        txtApellidos = new javax.swing.JTextField();
-        txtUsuario = new javax.swing.JTextField();
+        lblProducto = new javax.swing.JLabel();
+        lblDescripcion = new javax.swing.JLabel();
+        lblCantidad = new javax.swing.JLabel();
+        txtProducto = new javax.swing.JTextField();
+        txtCantidad = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblClientes = new javax.swing.JTable();
-        lblClave = new javax.swing.JLabel();
-        lblPerfil = new javax.swing.JLabel();
-        cmbPerfil = new javax.swing.JComboBox<>();
+        tblInventario = new javax.swing.JTable();
+        lblPrecio = new javax.swing.JLabel();
+        lblProveedor = new javax.swing.JLabel();
+        cmbProveedor = new javax.swing.JComboBox<>();
         lblBuscar = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
-        txtClave = new javax.swing.JPasswordField();
-        btnCambiar = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
+        txtPrecio = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Empleados");
+        setTitle("Inventario");
         setResizable(false);
 
-        lblNombres.setText("Nombres");
+        lblProducto.setText("Producto");
 
-        lblApellidos.setText("Apellidos");
+        lblDescripcion.setText("Descripcion");
 
-        lblUsuario.setText("Usuario");
+        lblCantidad.setText("Cantidad");
 
-        txtNombres.setEnabled(false);
+        txtProducto.setEnabled(false);
 
-        txtApellidos.setEnabled(false);
-        txtApellidos.addActionListener(new java.awt.event.ActionListener() {
+        txtCantidad.setEnabled(false);
+        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtApellidosActionPerformed(evt);
-            }
-        });
-
-        txtUsuario.setEnabled(false);
-        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsuarioActionPerformed(evt);
+                txtCantidadActionPerformed(evt);
             }
         });
 
@@ -171,7 +168,7 @@ public class FrmEmpleados extends javax.swing.JFrame {
             }
         });
 
-        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tblInventario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -182,27 +179,26 @@ public class FrmEmpleados extends javax.swing.JFrame {
 
             }
         ));
-        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblInventario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblClientesMouseClicked(evt);
+                tblInventarioMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblClientes);
+        jScrollPane1.setViewportView(tblInventario);
 
-        lblClave.setText("Clave");
+        lblPrecio.setText("Precio");
 
-        lblPerfil.setText("Perfil");
+        lblProveedor.setText("Proveedor");
 
         lblBuscar.setText("Buscar");
 
-        txtClave.setEnabled(false);
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(5);
+        txtDescripcion.setTabSize(4);
+        txtDescripcion.setEnabled(false);
+        jScrollPane2.setViewportView(txtDescripcion);
 
-        btnCambiar.setText("Cambiar Clave");
-        btnCambiar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCambiarActionPerformed(evt);
-            }
-        });
+        txtPrecio.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -214,30 +210,31 @@ public class FrmEmpleados extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNombres)
-                            .addComponent(lblApellidos)
-                            .addComponent(lblUsuario)
-                            .addComponent(lblClave)
-                            .addComponent(lblPerfil)
-                            .addComponent(lblBuscar))
+                            .addComponent(lblProducto)
+                            .addComponent(lblDescripcion)
+                            .addComponent(lblCantidad)
+                            .addComponent(lblPrecio)
+                            .addComponent(lblProveedor))
                         .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNombres)
-                            .addComponent(txtApellidos)
-                            .addComponent(txtUsuario)
-                            .addComponent(cmbPerfil, 0, 271, Short.MAX_VALUE)
-                            .addComponent(txtBuscar)
-                            .addComponent(txtClave)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEliminar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCambiar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnNuevo)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGuardar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscar)))
+                            .addComponent(txtProducto)
+                            .addComponent(txtCantidad)
+                            .addComponent(cmbProveedor, 0, 271, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2)
+                            .addComponent(txtPrecio)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(lblBuscar)
+                            .addGap(35, 35, 35)
+                            .addComponent(txtBuscar))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnNuevo)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnGuardar)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnBuscar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                            .addComponent(btnEliminar))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -245,25 +242,27 @@ public class FrmEmpleados extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombres))
+                    .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProducto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblDescripcion)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblApellidos))
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblUsuario))
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCantidad))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblClave)
-                    .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblPrecio)
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPerfil)
-                    .addComponent(cmbPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(lblProveedor)
+                    .addComponent(cmbProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBuscar)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -271,168 +270,142 @@ public class FrmEmpleados extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNuevo)
                     .addComponent(btnGuardar)
-                    .addComponent(btnBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnCambiar))
-                .addGap(27, 27, 27)
+                    .addComponent(btnBuscar)
+                    .addComponent(btnEliminar))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtApellidosActionPerformed
-
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        habilitarTextos(true);
-        if (btnGuardar.getText().equals("Editar")){
+        habilitarTextos();
+        if (btnGuardar.getText().equals("Editar")) {
             btnGuardar.setText("Guardar");
         }
     }//GEN-LAST:event_btnNuevoActionPerformed
 
-    private void habilitarTextos(boolean pass){
-        txtNombres.setEnabled(true);
-        txtNombres.grabFocus();
-        txtApellidos.setEnabled(true);
-        txtUsuario.setEnabled(true);
-        txtClave.setEnabled(pass);
+    private void habilitarTextos() {
+        txtProducto.setEnabled(true);
+        txtProducto.grabFocus();
+        txtDescripcion.setEnabled(true);
+        txtCantidad.setEnabled(true);
+        txtPrecio.setEnabled(true);
     }
-    private void limpiarTextos(){
-        txtNombres.setText("");
-        txtApellidos.setText("");
-        txtUsuario.setText("");
+
+    private void deshabilitarTextos() {
+        txtProducto.setEnabled(false);
+        txtDescripcion.setEnabled(false);
+        txtCantidad.setEnabled(false);
+        txtPrecio.setEnabled(false);
+    }
+
+    private void limpiarTextos() {
+        txtProducto.setText("");
+        txtDescripcion.setText("");
+        txtCantidad.setText("");
         txtBuscar.setText("");
-        txtClave.setText("");
+        txtPrecio.setText("");
     }
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling
-        String query, nombre, apellidos, usuario, clave, perfil;
-        nombre = txtNombres.getText();
-        apellidos = txtApellidos.getText();
-        usuario = txtUsuario.getText();
-        clave = auth.hash_pass(String.valueOf(txtClave.getPassword()));
-        perfil = cmbPerfil.getSelectedItem().toString();
-        String fk_perfil = "SELECT pk_perfiles from perfiles where nombre='"+perfil+"'";
-        if (btnGuardar.getText().equals("Guardar")){
-            
-            query = "INSERT INTO empleados (nombres,apellidos,usuario,clave,fk_perfil) values ('"
-                +nombre+"','"+apellidos+"','"+usuario+"','"+clave+"',("+fk_perfil+"));";
+        String query, producto, descripcion, cantidad, precio, proveedor;
+        producto = txtProducto.getText();
+        descripcion = txtDescripcion.getText();
+        cantidad = txtCantidad.getText();
+        precio = txtPrecio.getText();
+        proveedor = cmbProveedor.getSelectedItem().toString();
+        String fk_proveedor = "SELECT pk_proveedores from proveedores where nombre='" + proveedor + "'";
+        if (btnGuardar.getText().equals("Guardar")) {
+
+            query = "INSERT INTO inventario (producto,descripcion,cantidad,precio,fk_proveedores) values ('"
+                    + producto + "','" + descripcion + "','" + cantidad + "','" + precio + "',(" + fk_proveedor + "));";
             System.out.println(query);
-            ops.Insertar(query, "Empleado Agregado");
+            ops.Insertar(query, "Producto Agregado");
             limpiarTextos();
             modelo.setNumRows(0);
             ops.consultaGenerica(modelo, queryAll);
-            txtNombres.setEnabled(false);
-            txtApellidos.setEnabled(false);
-            txtUsuario.setEnabled(false);
+            deshabilitarTextos();
             txtBuscar.setEnabled(true);
         }
-        if (btnGuardar.getText().equals("Editar")){
-            Integer pk = Integer.parseInt(tblClientes.getValueAt(tblClientes.getSelectedRow(), 0).toString());
-            query = "UPDATE empleados set nombres='"+nombre+"',apellidos='"+apellidos+"',usuario='"+usuario+"',fk_perfil=("+fk_perfil+") where pk_empleado="+pk+";";
+        if (btnGuardar.getText().equals("Editar")) {
+            Integer pk = Integer.parseInt(tblInventario.getValueAt(tblInventario.getSelectedRow(), 0).toString());
+            query = "UPDATE inventario set producto='" + producto + "',"
+                    + "descripcion='" + descripcion + "',cantidad=" + cantidad + ",precio=" + precio
+                    + ",fk_proveedores=(" + fk_proveedor + ") where pk_inventario=" + pk + ";";
             System.out.println(query);
-            ops.actualizarRegistro(query, "Empleado Editado");
+            ops.actualizarRegistro(query, "Producto Editado");
             limpiarTextos();
             modelo.setNumRows(0);
             ops.consultaGenerica(modelo, queryAll);
-            txtNombres.setEnabled(false);
-            txtApellidos.setEnabled(false);
-            txtUsuario.setEnabled(false);
+            deshabilitarTextos();
             txtBuscar.setEnabled(true);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        String query = "delete from empleados where nombres='"+txtNombres.getText()+"';";
-        ops.actualizarRegistro(query, "Empleado Eliminado");
+        String query = "delete from inventario where producto='" + txtProducto.getText() + "';";
+        ops.actualizarRegistro(query, "Producto Eliminado");
         limpiarTextos();
         modelo.setNumRows(0);
         ops.consultaGenerica(modelo, queryAll);
-        txtNombres.setEnabled(false);
-        txtApellidos.setEnabled(false);
-        txtUsuario.setEnabled(false);
+        deshabilitarTextos();
         txtBuscar.setEnabled(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
+    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtUsuarioActionPerformed
+    }//GEN-LAST:event_txtCantidadActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         String word = txtBuscar.getText();
         setColumns();
-        ArrayList<String> columnas = new ArrayList<String>(Arrays.asList("ID","Nombres","Apellidos","Usuario","Perfil"));
-        String queryBuscar = "SELECT p.pk_empleado,p.nombres,p.apellidos,p.usuario,rb.nombre "
-            + "FROM empleados p INNER JOIN perfiles rb ON "
-            + "p.fk_perfil = rb.pk_perfiles where p.nombres like '%"+word+"%';";
+        ArrayList<String> columnas = new ArrayList<String>(Arrays.asList("ID", "Producto", "Descripcion", "Cantidad", "Precio", "Proveedor"));
+        String queryBuscar = "SELECT p.pk_inventario,p.producto,p.descripcion,p.cantidad,p.precio,rb.nombre "
+                + "FROM inventario p INNER JOIN proveedores rb ON "
+                + "p.fk_proveedores = rb.pk_proveedores where p.producto like '%" + word + "%';";
         //modelo = ops.Buscar(columnas, "empleados", "nombres", word);
         modelo = ops.buscarGenerico(columnas, queryBuscar);
-        tblClientes.setModel(modelo);
+        tblInventario.setModel(modelo);
         limpiarTextos();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
+    private void tblInventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInventarioMouseClicked
         // TODO add your handling code here:
-        Integer fila_seleccionada = tblClientes.getSelectedRow();
-        txtNombres.setText(tblClientes.getValueAt(fila_seleccionada, 1).toString());
-        txtApellidos.setText(tblClientes.getValueAt(fila_seleccionada, 2).toString());
-        txtUsuario.setText(tblClientes.getValueAt(fila_seleccionada, 3).toString());
-        cmbPerfil.setSelectedItem(tblClientes.getValueAt(fila_seleccionada, 4).toString());
-        
-        habilitarTextos(false);
-        btnGuardar.setText("Editar");
-    }//GEN-LAST:event_tblClientesMouseClicked
+        Integer fila_seleccionada = tblInventario.getSelectedRow();
+        txtProducto.setText(tblInventario.getValueAt(fila_seleccionada, 1).toString());
+        txtDescripcion.setText(tblInventario.getValueAt(fila_seleccionada, 2).toString());
+        txtCantidad.setText(tblInventario.getValueAt(fila_seleccionada, 3).toString());
+        txtPrecio.setText(tblInventario.getValueAt(fila_seleccionada, 4).toString());
+        cmbProveedor.setSelectedItem(tblInventario.getValueAt(fila_seleccionada, 5).toString());
 
-    private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
-        // TODO add your handling code here:
-        if (txtUsuario.getText().isEmpty()){
-            JOptionPane.showMessageDialog(rootPane, "Debes seleccionar un usuario");
-        } else {
-            String usuario = txtUsuario.getText();
-            JPasswordField passField = new JPasswordField();
-            JPasswordField passFieldConfirm = new JPasswordField();
-            String message = "Por favor ingresa la nueva clave 2 veces";
-            int result = JOptionPane.showOptionDialog(rootPane, new Object[] {message, passField, passFieldConfirm},
-            "Cambio de Clave", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (result == JOptionPane.OK_OPTION){
-                if(Arrays.equals(passField.getPassword(), passFieldConfirm.getPassword())){
-                    String clave = auth.hash_pass(String.valueOf(passField.getPassword()));
-                    String query = "UPDATE empleados set clave='"+clave+"' where usuario='"+usuario+"';";
-                    ops.actualizarRegistro(query, "Clave Cambiada");
-                    //String query = "UPDATE empleados set clave="+clave+" where pk_empleado="+pk+";";
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Clave no coincide");
-                }
-            }
-        }
-    }//GEN-LAST:event_btnCambiarActionPerformed
+        habilitarTextos();
+        btnGuardar.setText("Editar");
+    }//GEN-LAST:event_tblInventarioMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnCambiar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JComboBox<String> cmbPerfil;
+    private javax.swing.JComboBox<String> cmbProveedor;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblApellidos;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblBuscar;
-    private javax.swing.JLabel lblClave;
-    private javax.swing.JLabel lblNombres;
-    private javax.swing.JLabel lblPerfil;
-    private javax.swing.JLabel lblUsuario;
-    private javax.swing.JTable tblClientes;
-    private javax.swing.JTextField txtApellidos;
+    private javax.swing.JLabel lblCantidad;
+    private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JLabel lblPrecio;
+    private javax.swing.JLabel lblProducto;
+    private javax.swing.JLabel lblProveedor;
+    private javax.swing.JTable tblInventario;
     private javax.swing.JTextField txtBuscar;
-    private javax.swing.JPasswordField txtClave;
-    private javax.swing.JTextField txtNombres;
-    private javax.swing.JTextField txtUsuario;
+    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtProducto;
     // End of variables declaration//GEN-END:variables
 }

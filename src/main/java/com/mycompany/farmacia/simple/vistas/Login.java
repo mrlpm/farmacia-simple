@@ -21,8 +21,9 @@ import jiconfont.swing.IconFontSwing;
  * @author Monica Ranchos y Luis Pérez
  */
 public class Login extends javax.swing.JFrame {
+
     private Connection conn;
-    private Auth auth;    
+    private Auth auth;
 
     public Connection getConn() {
         return conn;
@@ -39,6 +40,7 @@ public class Login extends javax.swing.JFrame {
     public void setAuth(Auth auth) {
         this.auth = auth;
     }
+
     /**
      * Creates new form Login
      */
@@ -129,7 +131,7 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formKeyPressed
 
-    public void cleanTextFields(){
+    public void cleanTextFields() {
         jTextField1.setText("");
         jPasswordField1.setText("");
     }
@@ -137,21 +139,21 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         String usuario = jTextField1.getText();
         String clave = String.valueOf(jPasswordField1.getPassword());
-        String hashDb,perfil;
-        
+        String hashDb, perfil;
+
         boolean isAdmin = false;
         String sSQL;
-        sSQL = "SELECT clave,fk_perfil FROM empleados where usuario='"+usuario+"';";
+        sSQL = "SELECT clave,fk_perfil FROM empleados where usuario='" + usuario + "';";
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sSQL);
-            if(rs.next()){
-                
+            if (rs.next()) {
+
                 hashDb = rs.getString("clave");
                 perfil = rs.getString("fk_perfil");
-                if(auth.check_pass(clave, hashDb)){
+                if (auth.check_pass(clave, hashDb)) {
                     //JOptionPane.showMessageDialog(rootPane, "Usuario y clave correctos");
-                    if (perfil.equals("2")){
+                    if (perfil.equals("2")) {
                         isAdmin = true;
                     }
                     FrmDashboard frmDash = new FrmDashboard(isAdmin, this, usuario);
@@ -164,7 +166,7 @@ public class Login extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Usuario no encontrado");
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(rootPane, e);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
