@@ -23,12 +23,14 @@
  */
 package com.mycompany.farmacia.simple.vistas;
 
+import com.mycompany.farmacia.simple.controladores.Auth;
 import com.mycompany.farmacia.simple.controladores.Operaciones;
-import com.mycompany.farmacia.simple.modelos.Proveedores;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.table.DefaultTableModel;
 import jiconfont.icons.font_awesome.FontAwesome;
 import jiconfont.swing.IconFontSwing;
@@ -37,14 +39,16 @@ import jiconfont.swing.IconFontSwing;
  *
  * @author Monica Ranchos y Luis Pérez
  */
-public class FrmClientes extends javax.swing.JFrame {
+public class FrmEmpleados extends javax.swing.JFrame {
 
     DefaultTableModel modelo = new DefaultTableModel();
     private Connection conn;
     Operaciones ops;
-    String dbColumnas = "pk_clientes,nombre,nit,telefono";
-    String queryAll = "SELECT "+dbColumnas+" FROM clientes;";
-    
+    ArrayList<String> perfiles = new ArrayList();
+    Auth auth = new Auth();
+    String queryAll = "SELECT p.pk_empleado,p.nombres,p.apellidos,p.usuario,rb.nombre"
+            + " FROM empleados p INNER JOIN perfiles rb ON p.fk_perfil = rb.pk_perfiles;";
+
     public void setConn(Connection conn) {
         this.conn = conn;
     }
@@ -52,14 +56,15 @@ public class FrmClientes extends javax.swing.JFrame {
     public void setColumns(){
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
-        modelo.addColumn("NIT");
-        modelo.addColumn("Telefono");
+        modelo.addColumn("Apellidos");
+        modelo.addColumn("Usuario");
+        modelo.addColumn("Perfil");
     }
     /**
      * Creates new form FrmProveedores
      * @param cn
      */
-    public FrmClientes(Connection cn) {
+    public FrmEmpleados(Connection cn) {
         this.conn = cn;
         this.ops = new Operaciones(conn);
         IconFontSwing.register(FontAwesome.getIconFont());
@@ -67,14 +72,20 @@ public class FrmClientes extends javax.swing.JFrame {
         Icon iconSave = IconFontSwing.buildIcon(FontAwesome.FLOPPY_O, 15);
         Icon iconSearch = IconFontSwing.buildIcon(FontAwesome.SEARCH, 15);
         Icon iconDelete = IconFontSwing.buildIcon(FontAwesome.USER_TIMES, 15);
+        Icon iconChange = IconFontSwing.buildIcon(FontAwesome.LOCK, 15);
         initComponents();
         btnNuevo.setIcon(iconNew);
         btnGuardar.setIcon(iconSave);
         btnBuscar.setIcon(iconSearch);
         btnEliminar.setIcon(iconDelete);
+        btnCambiar.setIcon(iconChange);
         tblClientes.setModel(modelo);
         setColumns();
         ops.consultaGenerica(modelo, queryAll);
+        perfiles = ops.getPerfiles();
+        for(Object perfil : perfiles){
+            cmbPerfil.addItem(perfil.toString());
+        }
     }
 
     /**
@@ -86,44 +97,49 @@ public class FrmClientes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblNombre = new javax.swing.JLabel();
-        lblNit = new javax.swing.JLabel();
-        lblTelefono = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
-        txtNit = new javax.swing.JTextField();
-        txtTelefono = new javax.swing.JTextField();
+        lblNombres = new javax.swing.JLabel();
+        lblApellidos = new javax.swing.JLabel();
+        lblUsuario = new javax.swing.JLabel();
+        txtNombres = new javax.swing.JTextField();
+        txtApellidos = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
+        lblClave = new javax.swing.JLabel();
+        lblPerfil = new javax.swing.JLabel();
+        cmbPerfil = new javax.swing.JComboBox<>();
         lblBuscar = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
+        txtClave = new javax.swing.JPasswordField();
+        btnCambiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Clientes");
+        setTitle("Empleados");
         setResizable(false);
 
-        lblNombre.setText("Nombre");
+        lblNombres.setText("Nombres");
 
-        lblNit.setText("NIT");
+        lblApellidos.setText("Apellidos");
 
-        lblTelefono.setText("Telefono");
+        lblUsuario.setText("Usuario");
 
-        txtNombre.setEnabled(false);
+        txtNombres.setEnabled(false);
 
-        txtNit.setEnabled(false);
-        txtNit.addActionListener(new java.awt.event.ActionListener() {
+        txtApellidos.setEnabled(false);
+        txtApellidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNitActionPerformed(evt);
+                txtApellidosActionPerformed(evt);
             }
         });
 
-        txtTelefono.setEnabled(false);
-        txtTelefono.addActionListener(new java.awt.event.ActionListener() {
+        txtUsuario.setEnabled(false);
+        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTelefonoActionPerformed(evt);
+                txtUsuarioActionPerformed(evt);
             }
         });
 
@@ -173,33 +189,55 @@ public class FrmClientes extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblClientes);
 
+        lblClave.setText("Clave");
+
+        lblPerfil.setText("Perfil");
+
         lblBuscar.setText("Buscar");
+
+        txtClave.setEnabled(false);
+
+        btnCambiar.setText("Cambiar Clave");
+        btnCambiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnNuevo)
-                    .addComponent(lblNombre)
-                    .addComponent(lblNit)
-                    .addComponent(lblTelefono)
-                    .addComponent(lblBuscar))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNombres)
+                            .addComponent(lblApellidos)
+                            .addComponent(lblUsuario)
+                            .addComponent(lblClave)
+                            .addComponent(lblPerfil)
+                            .addComponent(lblBuscar))
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNombres)
+                            .addComponent(txtApellidos)
+                            .addComponent(txtUsuario)
+                            .addComponent(cmbPerfil, 0, 271, Short.MAX_VALUE)
+                            .addComponent(txtBuscar)
+                            .addComponent(txtClave)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnEliminar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCambiar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnNuevo)
+                        .addGap(18, 18, 18)
                         .addComponent(btnGuardar)
                         .addGap(18, 18, 18)
-                        .addComponent(btnBuscar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminar))
-                    .addComponent(txtNombre)
-                    .addComponent(txtNit)
-                    .addComponent(txtTelefono)
-                    .addComponent(txtBuscar))
+                        .addComponent(btnBuscar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -207,113 +245,135 @@ public class FrmClientes extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre))
+                    .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombres))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNit))
+                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblApellidos))
                 .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTelefono))
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblUsuario))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClave)
+                    .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPerfil)
+                    .addComponent(cmbPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBuscar)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNuevo)
                     .addComponent(btnGuardar)
-                    .addComponent(btnBuscar)
-                    .addComponent(btnEliminar))
-                .addGap(18, 18, 18)
+                    .addComponent(btnBuscar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnCambiar))
+                .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNitActionPerformed
+    private void txtApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNitActionPerformed
+    }//GEN-LAST:event_txtApellidosActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        habilitarTextos();
+        habilitarTextos(true);
         if (btnGuardar.getText().equals("Editar")){
             btnGuardar.setText("Guardar");
         }
     }//GEN-LAST:event_btnNuevoActionPerformed
 
-    private void habilitarTextos(){
-        txtNombre.setEnabled(true);
-        txtNombre.grabFocus();
-        txtNit.setEnabled(true);
-        txtTelefono.setEnabled(true);
+    private void habilitarTextos(boolean pass){
+        txtNombres.setEnabled(true);
+        txtNombres.grabFocus();
+        txtApellidos.setEnabled(true);
+        txtUsuario.setEnabled(true);
+        txtClave.setEnabled(pass);
     }
     private void limpiarTextos(){
-        txtNombre.setText("");
-        txtNit.setText("");
-        txtTelefono.setText("");
+        txtNombres.setText("");
+        txtApellidos.setText("");
+        txtUsuario.setText("");
         txtBuscar.setText("");
+        txtClave.setText("");
     }
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling
-        String query, nombre, nit, telefono;
-        nombre = txtNombre.getText();
-        nit = txtNit.getText();
-        telefono = txtTelefono.getText();
+        String query, nombre, apellidos, usuario, clave, perfil;
+        nombre = txtNombres.getText();
+        apellidos = txtApellidos.getText();
+        usuario = txtUsuario.getText();
+        clave = auth.hash_pass(String.valueOf(txtClave.getPassword()));
+        perfil = cmbPerfil.getSelectedItem().toString();
+        String fk_perfil = "SELECT pk_perfiles from perfiles where nombre='"+perfil+"'";
         if (btnGuardar.getText().equals("Guardar")){
-            query = "INSERT INTO clientes (nombre,nit,telefono) values ('"
-                +nombre+"','"+nit+"','"+telefono+"');";
-            ops.Insertar(query, "Cliente Agregado");
+            
+            query = "INSERT INTO empleados (nombres,apellidos,usuario,clave,fk_perfil) values ('"
+                +nombre+"','"+apellidos+"','"+usuario+"','"+clave+"',("+fk_perfil+"));";
+            System.out.println(query);
+            ops.Insertar(query, "Empleado Agregado");
             limpiarTextos();
             modelo.setNumRows(0);
             ops.consultaGenerica(modelo, queryAll);
-            txtNombre.setEnabled(false);
-            txtNit.setEnabled(false);
-            txtTelefono.setEnabled(false);
+            txtNombres.setEnabled(false);
+            txtApellidos.setEnabled(false);
+            txtUsuario.setEnabled(false);
             txtBuscar.setEnabled(true);
         }
         if (btnGuardar.getText().equals("Editar")){
             Integer pk = Integer.parseInt(tblClientes.getValueAt(tblClientes.getSelectedRow(), 0).toString());
-            query = "UPDATE clientes set nombre='"+nombre+"',nit='"+nit+"',telefono='"+telefono+"' where pk_clientes="+pk+";";
+            query = "UPDATE empleados set nombres='"+nombre+"',apellidos='"+apellidos+"',usuario='"+usuario+"',fk_perfil=("+fk_perfil+") where pk_empleado="+pk+";";
             System.out.println(query);
-            ops.actualizarRegistro(query, "Cliente Editado");
+            ops.actualizarRegistro(query, "Empleado Editado");
             limpiarTextos();
             modelo.setNumRows(0);
             ops.consultaGenerica(modelo, queryAll);
-            txtNombre.setEnabled(false);
-            txtNit.setEnabled(false);
-            txtTelefono.setEnabled(false);
+            txtNombres.setEnabled(false);
+            txtApellidos.setEnabled(false);
+            txtUsuario.setEnabled(false);
             txtBuscar.setEnabled(true);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        String query = "delete from clientes where nombre='"+txtNombre.getText()+"';";
-        ops.actualizarRegistro(query, "Cliente Eliminado");
+        String query = "delete from empleados where nombres='"+txtNombres.getText()+"';";
+        ops.actualizarRegistro(query, "Empleado Eliminado");
         limpiarTextos();
         modelo.setNumRows(0);
         ops.consultaGenerica(modelo, queryAll);
-        txtNombre.setEnabled(false);
-        txtNit.setEnabled(false);
-        txtTelefono.setEnabled(false);
+        txtNombres.setEnabled(false);
+        txtApellidos.setEnabled(false);
+        txtUsuario.setEnabled(false);
         txtBuscar.setEnabled(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
+    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtTelefonoActionPerformed
+    }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         String word = txtBuscar.getText();
         setColumns();
-        ArrayList<String> columnas = new ArrayList<String>(Arrays.asList("ID","Nombre","NIT","Telefono"));
-        modelo = ops.Buscar(columnas, "clientes", "nombre", word);
+        ArrayList<String> columnas = new ArrayList<String>(Arrays.asList("ID","Nombres","Apellidos","Usuario","Perfil"));
+        String queryBuscar = "SELECT p.pk_empleado,p.nombres,p.apellidos,p.usuario,rb.nombre "
+            + "FROM empleados p INNER JOIN perfiles rb ON "
+            + "p.fk_perfil = rb.pk_perfiles where p.nombres like '%"+word+"%';";
+        //modelo = ops.Buscar(columnas, "empleados", "nombres", word);
+        modelo = ops.buscarGenerico(columnas, queryBuscar);
         tblClientes.setModel(modelo);
         limpiarTextos();
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -321,27 +381,58 @@ public class FrmClientes extends javax.swing.JFrame {
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
         // TODO add your handling code here:
         Integer fila_seleccionada = tblClientes.getSelectedRow();
-        txtNombre.setText(tblClientes.getValueAt(fila_seleccionada, 1).toString());
-        txtNit.setText(tblClientes.getValueAt(fila_seleccionada, 2).toString());
-        txtTelefono.setText(tblClientes.getValueAt(fila_seleccionada, 3).toString());
-        habilitarTextos();
+        txtNombres.setText(tblClientes.getValueAt(fila_seleccionada, 1).toString());
+        txtApellidos.setText(tblClientes.getValueAt(fila_seleccionada, 2).toString());
+        txtUsuario.setText(tblClientes.getValueAt(fila_seleccionada, 3).toString());
+        cmbPerfil.setSelectedItem(tblClientes.getValueAt(fila_seleccionada, 4).toString());
+        
+        habilitarTextos(false);
         btnGuardar.setText("Editar");
     }//GEN-LAST:event_tblClientesMouseClicked
 
+    private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
+        // TODO add your handling code here:
+        if (txtUsuario.getText().isEmpty()){
+            JOptionPane.showMessageDialog(rootPane, "Debes seleccionar un usuario");
+        } else {
+            String usuario = txtUsuario.getText();
+            JPasswordField passField = new JPasswordField();
+            JPasswordField passFieldConfirm = new JPasswordField();
+            String message = "Por favor ingresa la nueva clave 2 veces";
+            int result = JOptionPane.showOptionDialog(rootPane, new Object[] {message, passField, passFieldConfirm},
+            "Cambio de Clave", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if (result == JOptionPane.OK_OPTION){
+                if(Arrays.equals(passField.getPassword(), passFieldConfirm.getPassword())){
+                    String clave = auth.hash_pass(String.valueOf(passField.getPassword()));
+                    String query = "UPDATE empleados set clave='"+clave+"' where usuario='"+usuario+"';";
+                    ops.actualizarRegistro(query, "Clave Cambiada");
+                    //String query = "UPDATE empleados set clave="+clave+" where pk_empleado="+pk+";";
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Clave no coincide");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnCambiarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCambiar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JComboBox<String> cmbPerfil;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblApellidos;
     private javax.swing.JLabel lblBuscar;
-    private javax.swing.JLabel lblNit;
-    private javax.swing.JLabel lblNombre;
-    private javax.swing.JLabel lblTelefono;
+    private javax.swing.JLabel lblClave;
+    private javax.swing.JLabel lblNombres;
+    private javax.swing.JLabel lblPerfil;
+    private javax.swing.JLabel lblUsuario;
     private javax.swing.JTable tblClientes;
+    private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtBuscar;
-    private javax.swing.JTextField txtNit;
-    private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtTelefono;
+    private javax.swing.JPasswordField txtClave;
+    private javax.swing.JTextField txtNombres;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
