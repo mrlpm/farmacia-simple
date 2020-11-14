@@ -20,7 +20,12 @@ public class FrmConfiguracion extends javax.swing.JFrame {
     public FrmConfiguracion(Configuracion conf) {
         initComponents();
         this.conf = conf;
+    }
+    
+    public void setCajasTexto(){
         if (this.conf.Existe()){
+            System.out.println("Entro");
+            this.conf.Leer();
             jTextField1.setText(this.conf.getDatabase());
             jTextField2.setText(this.conf.getUsuario());
             jTextField3.setText(this.conf.getClave());

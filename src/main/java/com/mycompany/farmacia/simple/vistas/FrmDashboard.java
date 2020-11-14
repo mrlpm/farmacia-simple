@@ -23,6 +23,7 @@
  */
 package com.mycompany.farmacia.simple.vistas;
 
+import com.mycompany.farmacia.simple.controladores.Configuracion;
 import java.awt.Color;
 import java.sql.Connection;
 import javax.swing.Icon;
@@ -418,6 +419,9 @@ public class FrmDashboard extends javax.swing.JFrame {
 
     private void pnlConfiguracionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlConfiguracionMouseClicked
         // TODO add your handling code here:
+        FrmConfiguracion frmConf = new FrmConfiguracion(new Configuracion(".farmacia","config.ini"));
+        frmConf.setCajasTexto();
+        frmConf.setVisible(true);
     }//GEN-LAST:event_pnlConfiguracionMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
