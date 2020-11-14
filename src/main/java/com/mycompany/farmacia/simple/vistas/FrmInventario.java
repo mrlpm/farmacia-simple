@@ -323,7 +323,7 @@ public class FrmInventario extends javax.swing.JFrame {
             query = "INSERT INTO inventario (producto,descripcion,cantidad,precio,fk_proveedores) values ('"
                     + producto + "','" + descripcion + "','" + cantidad + "','" + precio + "',(" + fk_proveedor + "));";
             System.out.println(query);
-            ops.Insertar(query, "Producto Agregado");
+            ops.Insertar(query, "Producto Agregado", true);
             limpiarTextos();
             modelo.setNumRows(0);
             ops.consultaGenerica(modelo, queryAll);

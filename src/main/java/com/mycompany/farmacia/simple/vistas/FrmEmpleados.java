@@ -83,9 +83,9 @@ public class FrmEmpleados extends javax.swing.JFrame {
         setColumns();
         ops.consultaGenerica(modelo, queryAll);
         perfiles = ops.getPerfiles();
-        for(Object perfil : perfiles){
-            cmbPerfil.addItem(perfil.toString());
-        }
+        perfiles.forEach(perfil -> {
+            cmbPerfil.addItem(perfil);
+        });
     }
 
     /**
@@ -323,7 +323,7 @@ public class FrmEmpleados extends javax.swing.JFrame {
             query = "INSERT INTO empleados (nombres,apellidos,usuario,clave,fk_perfil) values ('"
                 +nombre+"','"+apellidos+"','"+usuario+"','"+clave+"',("+fk_perfil+"));";
             System.out.println(query);
-            ops.Insertar(query, "Empleado Agregado");
+            ops.Insertar(query, "Empleado Agregado", true);
             limpiarTextos();
             modelo.setNumRows(0);
             ops.consultaGenerica(modelo, queryAll);

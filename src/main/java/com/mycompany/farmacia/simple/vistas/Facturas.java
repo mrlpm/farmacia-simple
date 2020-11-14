@@ -27,6 +27,7 @@ import com.mycompany.farmacia.simple.controladores.Operaciones;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -74,7 +75,6 @@ public class Facturas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         lblAtendio = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -84,14 +84,15 @@ public class Facturas extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         txtCliente = new javax.swing.JTextField();
         lblEmpleado = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        txtNIT = new javax.swing.JTextField();
+        btnFacturas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Facturacion");
         setResizable(false);
 
-        jLabel1.setText("No. Factura");
-
-        lblAtendio.setText("Atendió");
+        lblAtendio.setText("Atendió:");
 
         jLabel3.setText("Cliente");
 
@@ -120,38 +121,58 @@ public class Facturas extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Imprimir");
+        jButton3.setText("Guardar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         txtCliente.setEnabled(false);
 
         lblEmpleado.setText("Usuario");
 
+        jLabel1.setText("NIT");
+
+        txtNIT.setEnabled(false);
+
+        btnFacturas.setText("Ver Facturas");
+        btnFacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFacturasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblAtendio)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblEmpleado)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(103, 103, 103))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNIT, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnClientes)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblAtendio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblEmpleado))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnClientes)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton3))
+                            .addComponent(btnFacturas))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -159,19 +180,22 @@ public class Facturas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
                     .addComponent(lblAtendio)
                     .addComponent(lblEmpleado))
-                .addGap(31, 31, 31)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtNIT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClientes)
                     .addComponent(btnProductos)
                     .addComponent(jButton3))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnFacturas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -200,8 +224,54 @@ public class Facturas extends javax.swing.JFrame {
         frmProductos.setVisible(true);
     }//GEN-LAST:event_btnProductosActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String empleado, cliente, nit;
+        empleado = lblEmpleado.getText();
+        cliente = txtCliente.getText();
+        nit = txtNIT.getText();
+        String query1;
+        
+        String query0 = "INSERT INTO facturas (fk_empleado, fk_cliente) "
+        + "values((select pk_empleado from empleados where nombres='"+empleado+"'),"
+        + "(select pk_clientes from clientes where nombre='"+cliente+"'));";
+        ops.Insertar(query0, "Factura",false);
+        
+        for (int i=0; i<jTable1.getRowCount();i++){
+            String cantidad = jTable1.getValueAt(i, 0).toString();
+            String prod = jTable1.getValueAt(i, 1).toString();
+            //String descripcion = jTable1.getValueAt(i, 2).toString();
+            String precio = jTable1.getValueAt(i, 3).toString();
+            String fk_factura = ops.getCelda("SELECT pk_factura FROM facturas ORDER BY pk_factura DESC LIMIT 1;", "pk_factura");
+            String fk_producto = ops.getCelda("SELECT pk_inventario from inventario where producto='"+prod+"';", "pk_inventario");
+            
+            query1 = "INSERT INTO detalle_factura (fk_producto,fk_factura,cantidad,precio)"
+                    + "VALUES ("+Integer.parseInt(fk_producto)+","+Integer.parseInt(fk_factura)+","+Integer.parseInt(cantidad)
+                    + ","+Double.parseDouble(precio)+")";
+            System.out.println(query1);
+            ops.Insertar(query1, "Detalle", false);
+        }
+        JOptionPane.showMessageDialog(rootPane, "Factura Ingresada Correctamente");
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturasActionPerformed
+        // TODO add your handling code here:
+        ArrayList<String> columnas = new ArrayList<>(Arrays.asList("No.", "Cliente", "Producto","Cantidad", "Precio", "Total"));
+        String query = "SELECT fac.pk_factura,cl.nombre,inv.producto,det.cantidad,"
+                + "det.precio,(det.cantidad*det.precio) as total FROM facturas fac "
+                + "INNER JOIN detalle_factura det ON fk_factura = pk_factura INNER JOIN "
+                + "clientes cl ON fk_cliente=pk_clientes INNER JOIN inventario inv "
+                + "ON fk_producto=pk_inventario ORDER BY fac.pk_factura;";
+        modelo = ops.buscarGenerico(columnas, query);
+        Generic frmFacturasAll = new Generic(modelo, this, true, ops);
+        frmFacturasAll.setTitle("Facturas");
+        frmFacturasAll.disableSeleccionar();
+        frmFacturasAll.setVisible(true);
+    }//GEN-LAST:event_btnFacturasActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClientes;
+    private javax.swing.JButton btnFacturas;
     private javax.swing.JButton btnProductos;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -211,6 +281,7 @@ public class Facturas extends javax.swing.JFrame {
     private javax.swing.JLabel lblAtendio;
     private javax.swing.JLabel lblEmpleado;
     public javax.swing.JTextField txtCliente;
+    public javax.swing.JTextField txtNIT;
     // End of variables declaration//GEN-END:variables
     public ArrayList<String> producto = new ArrayList<>();
 }

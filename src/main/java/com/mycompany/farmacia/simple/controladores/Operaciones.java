@@ -58,6 +58,32 @@ public class Operaciones {
         }
         return empleado;
     }
+    
+    public String getFactura(String query) {
+        String factura = "";
+        try {
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                factura = rs.getString("pk_factura");
+            }
+        } catch (SQLException e) {
+        }
+        return factura;
+    }
+    
+    public String getCelda(String query, String campo){
+        String celda = "";
+        try {
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                celda = rs.getString(campo);
+            }
+        } catch (SQLException e) {
+        }
+        return celda;
+    }
 
     public ArrayList<String> getPerfiles() {
         String query = "SELECT nombre FROM perfiles";
@@ -219,12 +245,14 @@ public class Operaciones {
         return modelo;
     }
 
-    public void Insertar(String query, String objeto) {
+    public void Insertar(String query, String objeto, boolean show) {
         try {
             Statement stmt = conn.createStatement();
             int n = stmt.executeUpdate(query);
             if (n != 0) {
-                JOptionPane.showMessageDialog(null, objeto);
+                if (show){
+                    JOptionPane.showMessageDialog(null, objeto);
+                }
             }
         } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);

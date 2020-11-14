@@ -266,7 +266,7 @@ public class FrmClientes extends javax.swing.JFrame {
         if (btnGuardar.getText().equals("Guardar")){
             query = "INSERT INTO clientes (nombre,nit,telefono) values ('"
                 +nombre+"','"+nit+"','"+telefono+"');";
-            ops.Insertar(query, "Cliente Agregado");
+            ops.Insertar(query, "Cliente Agregado", true);
             limpiarTextos();
             modelo.setNumRows(0);
             ops.consultaGenerica(modelo, queryAll);

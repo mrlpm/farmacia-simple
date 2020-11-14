@@ -60,6 +60,10 @@ public class Generic extends javax.swing.JFrame {
         }
         this.ops = ops;
     }
+    
+    public void disableSeleccionar(){
+        btnSeleccionar.setVisible(false);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -148,6 +152,7 @@ public class Generic extends javax.swing.JFrame {
         if (this.getTitle().equals("Clientes")) {
             Integer fila = jTable1.getSelectedRow();
             frmFact.txtCliente.setText(jTable1.getValueAt(fila, 1).toString());
+            frmFact.txtNIT.setText(jTable1.getValueAt(fila, 2).toString());
             this.dispose();
         } else if (this.getTitle().equals("Productos")) {
 
@@ -162,16 +167,28 @@ public class Generic extends javax.swing.JFrame {
                 String precio = jTable1.getValueAt(fila, 3).toString();
                 frmFact.modeloFactura.addRow(new Object[]{cantidad, producto, descripcion, precio});
             }
-        }
+        } 
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> columnas = new ArrayList<>(Arrays.asList("ID", "Producto", "Descripcion", "Precio"));
-        String producto = JOptionPane.showInputDialog(null, "Ingresa el nombre del producto");
-        String query = "SELECT * FROM inventario WHERE producto like '%" + producto + "%';";
-        model = ops.buscarGenerico(columnas, query);
-        jTable1.setModel(model);
+        if (this.getTitle().equals("Productos")) {
+            ArrayList<String> columnas = new ArrayList<>(Arrays.asList("ID", "Producto", "Descripcion", "Precio"));
+            String producto = JOptionPane.showInputDialog(null, "Ingresa el nombre del producto");
+            String query = "SELECT * FROM inventario WHERE producto like '%" + producto + "%';";
+            model = ops.buscarGenerico(columnas, query);
+            jTable1.setModel(model);
+        } else if (this.getTitle().equals("Facturas")) {
+            ArrayList<String> columnas = new ArrayList<>(Arrays.asList("ID", "Producto", "Descripcion", "Precio"));
+            String fact = JOptionPane.showInputDialog(null, "Ingresa el nombre del cliente");
+            String query = "SELECT fac.pk_factura,cl.nombre,inv.producto,det.cantidad,"
+                + "det.precio,(det.cantidad*det.precio) as total FROM facturas fac "
+                + "INNER JOIN detalle_factura det ON fk_factura = pk_factura INNER JOIN "
+                + "clientes cl ON fk_cliente=pk_clientes INNER JOIN inventario inv "
+                + "ON fk_producto=pk_inventario where cl.nombre like '%"+fact+"%';";
+            model = ops.buscarGenerico(columnas, query);
+            jTable1.setModel(model);        
+        } 
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

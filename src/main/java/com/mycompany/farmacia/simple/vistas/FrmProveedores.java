@@ -269,7 +269,7 @@ public class FrmProveedores extends javax.swing.JFrame {
         if (btnGuardar.getText().equals("Guardar")) {
             query = "INSERT INTO proveedores (nombre,direccion,telefono) values ('"
                     + nombre + "','" + direccion + "','" + telefono + "');";
-            ops.Insertar(query, "Proveedor Agregado");
+            ops.Insertar(query, "Proveedor Agregado", true);
             limpiarTextos();
             modelo.setNumRows(0);
             ops.consultaGenerica(modelo, queryAll);
